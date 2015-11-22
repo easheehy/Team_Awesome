@@ -5,7 +5,13 @@ public class PlayerScript : MonoBehaviour {
     //Player Sprite by default should be facing right
 
     public LevelManager levelManager;
-    
+    // Objects Collections Varibles 
+    public int Score = 0;
+
+    //variable for loading level 
+    // Error: can only be loaded from main thread
+    //private int current_level = Application.loadedLevel;
+
     //Player movement and jumping stats
     public int moveSpeed;
     public int jumpHeight;
@@ -48,7 +54,7 @@ public class PlayerScript : MonoBehaviour {
             changePlayerDirection(-scale.x);
         }
 
-        Debug.Log(rb.velocity);
+       // Debug.Log(rb.velocity);
 
     }
 
@@ -77,6 +83,29 @@ public class PlayerScript : MonoBehaviour {
         if (other.gameObject.tag.Equals("MovingPlatforms")) {
             this.transform.parent = other.transform.parent;
             return;
+        }
+
+        if (other.gameObject.tag.Equals("Collectables")== true)
+        {
+            Debug.Log("Contact");
+            Score += 1;
+            other.gameObject.SetActive(false);
+            Debug.Log(Score);
+
+            if(Score == 3)
+            {
+                Debug.Log("Game has Concluded");
+            }
+         
+         }
+        if (other.gameObject.tag.Equals("DoorExit"))
+        {
+            Debug.Log("Attempt to Exit");
+            if(Score == 3)
+            {
+                Application.LoadLevel("Level 1");
+                
+            }
         }
 
     }
